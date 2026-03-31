@@ -100,30 +100,7 @@ int main() {
     return 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//COUNTING SORT
+// -------------Counting-Sort------------//
 #include <iostream>
 using namespace std;
 
