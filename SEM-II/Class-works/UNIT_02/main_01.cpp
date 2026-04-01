@@ -144,3 +144,40 @@ int main() {
 
     return 0;
 }
+
+// -------------Radix-Sort------------//
+#include<iostream>
+using namespace std;
+int finding_max(int arr[], int n){
+    int maximum = arr[0];
+    for(int i=0; i<n; i++){
+        if(arr[i] > maximum){
+            maximum = arr[i];
+        }
+    }return maximum;
+}
+
+// void counting_unsorted(int arr[], int n, int exp){
+    
+// }
+int main(){
+
+    int n;
+    cout << "Enter the number of elements of array : ";
+    cin >> n;
+
+    int arr[100];
+
+    cout << "Enter the elements of your array : ";
+    for(int i=0; i<n; i++){
+        cin >> arr[i];
+    }
+
+    // radixsorting(arr,n);
+
+    cout << "SORTED ARRAY using radix sorting ==";
+    for(int i=0; i<n; i++){
+        cout << arr[i] << "  ";
+    }
+    return 0;
+}
