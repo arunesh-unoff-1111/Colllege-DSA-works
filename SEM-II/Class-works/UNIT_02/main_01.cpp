@@ -1,4 +1,3 @@
-
 //---------------------------------------Insertion-Sort-------------------------------------------------//
 #include <iostream>
 using namespace std;
@@ -14,13 +13,20 @@ int main() {
         cin >> arr[i];
     }
 
+    // Insertion Sort works like arranging cards in your hand.
+    // We assume the first element is already sorted.
+    // Then we pick the next element and compare it with elements before it.
+    // If it is smaller, we keep shifting it left until it reaches the correct position.
     for (int i = 1; i < n; i++) {
         int j = i;
+
+        // This loop keeps moving the current element to the left
+        // as long as it is smaller than the element before it.
         while (j > 0 && arr[j] < arr[j - 1]) {
             int temp = arr[j];
             arr[j] = arr[j - 1];
             arr[j - 1] = temp;
-            j--;
+            j--; // move one step left
         }
     }
 
@@ -32,7 +38,7 @@ int main() {
     return 0;
 }
 
-// ---------------------------------------Bubble-Sort-------------------------------------------------//
+//---------------------------------------Bubble-Sort-------------------------------------------------//
 #include <iostream>
 using namespace std;
 
@@ -47,7 +53,11 @@ int main() {
         cin >> arr[i];
     }
 
+    // Bubble Sort repeatedly compares adjacent elements.
+    // If the left element is bigger than the right one, they are swapped.
+    // After each pass, the largest element moves to the end like a bubble rising up.
     for (int i = 0; i < n - 1; i++) {
+        // After every pass, last i elements are already sorted
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
                 int temp = arr[j];
@@ -65,7 +75,7 @@ int main() {
     return 0;
 }
 
-// ---------------------------------------Selection-Sort-------------------------------------------------//
+//---------------------------------------Selection-Sort-------------------------------------------------//
 #include<iostream>
 using namespace std;
 
@@ -78,13 +88,20 @@ int main() {
         cin >> arr[i];
     }
     
+    // Selection Sort works by selecting the smallest element
+    // from the unsorted part and placing it at the correct position.
+    // First position gets the smallest element, second gets next smallest, and so on.
     for(int i = 0; i < n - 1; i++) {
-        int minIndex = i;
+        int minIndex = i; // assume current index has minimum
+
+        // Find the actual smallest element in the remaining array
         for(int j = i + 1; j < n; j++) {  
             if(arr[j] < arr[minIndex]) {
                 minIndex = j;
             }
         }
+
+        // Swap only if a smaller element was found
         if(minIndex != i) {
             int temp = arr[i];      
             arr[i] = arr[minIndex];
@@ -100,7 +117,7 @@ int main() {
     return 0;
 }
 
-// ---------------------------------------Counting-Sort-------------------------------------------------//
+//---------------------------------------Counting-Sort-------------------------------------------------//
 #include <iostream>
 using namespace std;
 
@@ -115,6 +132,8 @@ int main() {
         cin >> arr[i];
     }
 
+    // First, find the maximum value in the array
+    // because we need to create a counting array of that size
     int max = arr[0];
     for (int i = 1; i < n; i++) {
         if (arr[i] > max) {
@@ -122,11 +141,16 @@ int main() {
         }
     }
 
+    // Create a count array where index represents the number
+    // and value represents how many times it appears
     int count[max + 1] = {0};
+
+    // Count frequency of each number
     for (int i = 0; i < n; i++) {
         count[arr[i]]++;
     }
 
+    // Rebuild the sorted array using count array
     int index = 0;
     for (int i = 0; i <= max; i++) {
         while (count[i] > 0) {
@@ -145,8 +169,7 @@ int main() {
     return 0;
 }
 
-// ---------------------------------------Radix-Sort-------------------------------------------------//
-//---User input without using functions---//
+//---------------------------------------Radix-Sort-------------------------------------------------//
 #include <iostream>
 using namespace std;
 
@@ -162,7 +185,7 @@ int main() {
         cin >> arr[i];
     }
 
-    // Find maximum number
+    // Find maximum number to know how many digits we need to process
     int max = arr[0];
     for(int i = 1; i < n; i++) {
         if(arr[i] > max)
@@ -171,99 +194,36 @@ int main() {
 
     int exp = 1;
 
-    // Radix Sort
+    // Radix Sort processes digits one by one (units, tens, hundreds...)
     while(max / exp > 0) {
         int output[100];
         int count[10] = {0};
 
-        // Count occurrences of digits
+        // Count occurrences of digits at current place
         for(int i = 0; i < n; i++) {
             int index = (arr[i] / exp) % 10;
             count[index]++;
         }
 
-        // Convert to prefix sum
+        // Convert count array to prefix sum to determine positions
         for(int i = 1; i < 10; i++) {
             count[i] += count[i - 1];
         }
 
-        // Build output array (IMPORTANT: reverse loop)
+        // Build output array from right to left to maintain stability
         for(int i = n - 1; i >= 0; i--) {
             int index = (arr[i] / exp) % 10;
             output[count[index] - 1] = arr[i];
             count[index]--;
         }
 
-        // Copy back to original array
+        // Copy sorted values back to original array
         for(int i = 0; i < n; i++) {
             arr[i] = output[i];
         }
 
-        exp *= 10;
+        exp *= 10; // move to next digit place
     }
-
-    // Print sorted array
-    cout << "Sorted array: ";
-    for(int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-
-    return 0;
-}
-//---User input using functions---//
-#include <iostream>
-using namespace std;
-
-void countingSort(int arr[], int n, int exp) {
-    int output[100];
-    int count[10] = {0};
-
-    for(int i = 0; i < n; i++) {
-        int index = (arr[i] / exp) % 10;
-        count[index]++;
-    }
-
-    for(int i = 1; i < 10; i++) {
-        count[i] += count[i - 1];
-    }
-
-    for(int i = n - 1; i >= 0; i--) {
-        int index = (arr[i] / exp) % 10;
-        output[count[index] - 1] = arr[i];
-        count[index]--;
-    }
-
-    for(int i = 0; i < n; i++) {
-        arr[i] = output[i];
-    }
-}
-
-void radixSort(int arr[], int n) {
-    int max = arr[0];
-
-    for(int i = 1; i < n; i++) {
-        if(arr[i] > max)
-            max = arr[i];
-    }
-
-    for(int exp = 1; max / exp > 0; exp *= 10) {
-        countingSort(arr, n, exp);
-    }
-}
-
-int main() {
-    int n;
-    cout << "Enter number of elements: ";
-    cin >> n;
-
-    int arr[100];
-
-    cout << "Enter elements:\n";
-    for(int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-
-    radixSort(arr, n);
 
     cout << "Sorted array: ";
     for(int i = 0; i < n; i++) {
@@ -272,56 +232,8 @@ int main() {
 
     return 0;
 }
-// ---------------------------------------Bucket-Sort-------------------------------------------------//
-// -----User input | without fucntion-----//
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
 
-int main() {
-    int n;
-    cout << "Enter number of elements: ";
-    cin >> n;
-
-    float arr[100];
-
-    cout << "Enter elements (0 to 1 range):\n";
-    for(int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-
-    // Create buckets
-    vector<float> bucket[100];
-
-    // Put elements into buckets
-    for(int i = 0; i < n; i++) {
-        int index = n * arr[i];   // bucket index
-        bucket[index].push_back(arr[i]);
-    }
-
-    // Sort each bucket
-    for(int i = 0; i < n; i++) {
-        sort(bucket[i].begin(), bucket[i].end());
-    }
-
-    // Merge buckets
-    int k = 0;
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < bucket[i].size(); j++) {
-            arr[k++] = bucket[i][j];
-        }
-    }
-
-    // Print sorted array
-    cout << "Sorted array: ";
-    for(int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-
-    return 0;
-}
-// -----User input | without fucntion | withput vectors-----//
+//---------------------------------------Bucket-Sort-------------------------------------------------//
 #include <iostream>
 using namespace std;
 
@@ -336,18 +248,18 @@ int main() {
         cin >> arr[i];
     }
 
-    // Buckets
+    // Buckets divide the data into groups based on range
     int bucket[10][100];
     int count[10] = {0};
 
-    // Put elements into buckets
+    // Place elements into appropriate buckets
     for(int i = 0; i < n; i++) {
-        int index = arr[i] / 10;  // bucket index
+        int index = arr[i] / 10;  // decides bucket range
         bucket[index][count[index]] = arr[i];
         count[index]++;
     }
 
-    // Sort each bucket using Bubble Sort
+    // Sort each bucket individually (using Bubble Sort here)
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < count[i] - 1; j++) {
             for(int k = 0; k < count[i] - j - 1; k++) {
@@ -360,7 +272,7 @@ int main() {
         }
     }
 
-    // Merge buckets back into array
+    // Merge all buckets back into original array
     int index = 0;
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < count[i]; j++) {
@@ -368,81 +280,10 @@ int main() {
         }
     }
 
-    // Print sorted array
     cout << "Sorted array: ";
     for(int i = 0; i < n; i++) {
         cout << arr[i] << " ";
     }
-
-    return 0;
-}
-// ---upper code without arr 100---//
-#include <iostream>
-using namespace std;
-
-int main() {
-    int n;
-    cout << "Enter number of elements: ";
-    cin >> n;
-
-    // Dynamic array
-    int* arr = new int[n];
-
-    cout << "Enter elements (0–99 range):\n";
-    for(int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-
-    // Create buckets dynamically
-    int** bucket = new int*[10];
-    int* count = new int[10];
-
-    for(int i = 0; i < 10; i++) {
-        bucket[i] = new int[n];  // each bucket can hold up to n elements
-        count[i] = 0;
-    }
-
-    // Put elements into buckets
-    for(int i = 0; i < n; i++) {
-        int index = arr[i] / 10;
-        bucket[index][count[index]] = arr[i];
-        count[index]++;
-    }
-
-    // Sort each bucket (Bubble Sort)
-    for(int i = 0; i < 10; i++) {
-        for(int j = 0; j < count[i] - 1; j++) {
-            for(int k = 0; k < count[i] - j - 1; k++) {
-                if(bucket[i][k] > bucket[i][k + 1]) {
-                    int temp = bucket[i][k];
-                    bucket[i][k] = bucket[i][k + 1];
-                    bucket[i][k + 1] = temp;
-                }
-            }
-        }
-    }
-
-    // Merge buckets
-    int idx = 0;
-    for(int i = 0; i < 10; i++) {
-        for(int j = 0; j < count[i]; j++) {
-            arr[idx++] = bucket[i][j];
-        }
-    }
-
-    // Print result
-    cout << "Sorted array: ";
-    for(int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-
-    // Free memory
-    delete[] arr;
-    for(int i = 0; i < 10; i++) {
-        delete[] bucket[i];
-    }
-    delete[] bucket;
-    delete[] count;
 
     return 0;
 }
