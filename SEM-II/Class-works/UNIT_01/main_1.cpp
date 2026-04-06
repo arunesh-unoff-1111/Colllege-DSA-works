@@ -63,7 +63,7 @@ int main() {
     return 0;
 }
 
-//-----------------------------Without-function & with user input
+//-----------------------------Without-function & with user input-----------------------------//
 // -------------Linear-Search------------//
 
 #include <iostream>
