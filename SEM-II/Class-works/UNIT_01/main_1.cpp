@@ -76,7 +76,7 @@ int main() {
     cin >> n;
 
     int arr[n];
-    cout << "Enter elements:\n";
+    cout << "Enter elements:" << endl;
     for(int i = 0; i < n; i++) {
         cin >> arr[i];
     }
@@ -109,7 +109,7 @@ int main() {
     cin >> n;
 
     int arr[n];
-    cout << "Enter sorted elements:\n";
+    cout << "Enter sorted elements:" << endl;
     for(int i = 0; i < n; i++) {
         cin >> arr[i];
     }
