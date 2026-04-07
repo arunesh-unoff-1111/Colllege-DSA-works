@@ -243,23 +243,20 @@ int main() {
     cin >> n;
 
     int arr[100];
-    cout << "Enter elements (0–99 range):\n";
+    cout << "Enter elements (0-99 range):" << endl;
     for(int i = 0; i < n; i++) {
         cin >> arr[i];
     }
 
-    // Buckets divide the data into groups based on range
     int bucket[10][100];
     int count[10] = {0};
 
-    // Place elements into appropriate buckets
     for(int i = 0; i < n; i++) {
-        int index = arr[i] / 10;  // decides bucket range
+        int index = arr[i] / 10;  
         bucket[index][count[index]] = arr[i];
         count[index]++;
     }
 
-    // Sort each bucket individually (using Bubble Sort here)
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < count[i] - 1; j++) {
             for(int k = 0; k < count[i] - j - 1; k++) {
@@ -272,7 +269,6 @@ int main() {
         }
     }
 
-    // Merge all buckets back into original array
     int index = 0;
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < count[i]; j++) {
@@ -287,71 +283,6 @@ int main() {
 
     return 0;
 }
-// --------------using functions-bucket sort--------------//
-#include<iostream>
-using namespace std;
 
-// Function to sort individual buckets using simple insertion sort
-void insertionSort(float bucket[], int n) {
-    for (int i = 1; i < n; i++) {
-        float key = bucket[i];
-        int j = i - 1;
 
-        while (j >= 0 && bucket[j] > key) {
-            bucket[j + 1] = bucket[j];
-            j--;
-        }
-        bucket[j + 1] = key;
-    }
-}
 
-// Bucket Sort function
-void bucketSort(float arr[], int n) {
-    // Create n empty buckets
-    float buckets[10][10];   // 10 buckets, each can hold 10 elements (adjust if needed)
-    int count[10] = {0};
-
-    // Put array elements into different buckets
-    for (int i = 0; i < n; i++) {
-        int index = arr[i] * 10;  // Assuming input is between 0 and 1
-        buckets[index][count[index]] = arr[i];
-        count[index]++;
-    }
-
-    // Sort individual buckets
-    for (int i = 0; i < 10; i++) {
-        insertionSort(buckets[i], count[i]);
-    }
-
-    // Concatenate all buckets into arr[]
-    int k = 0;
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < count[i]; j++) {
-            arr[k++] = buckets[i][j];
-        }
-    }
-}
-
-// Function to print array
-void printArray(float arr[], int n) {
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-}
-
-// Main function
-int main() {
-    float arr[] = {0.78, 0.17, 0.39, 0.26, 0.72, 0.94, 0.21, 0.12, 0.23, 0.68};
-    int n = 10;
-
-    cout << "Original array:\n";
-    printArray(arr, n);
-
-    bucketSort(arr, n);
-
-    cout << "Sorted array:\n";
-    printArray(arr, n);
-
-    return 0;
-}
