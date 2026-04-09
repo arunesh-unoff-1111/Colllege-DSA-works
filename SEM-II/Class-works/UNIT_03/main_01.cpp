@@ -1,3 +1,11 @@
+#include<iostream>
+using namespace std;
+int main(){
+    
+
+    return 0;
+}
+
 //------------------------------------------------Linked-List---------------------------------------------//
 //-------------without function----------------//
 #include <iostream>
@@ -95,3 +103,5 @@ int main() {
 // Here, instead of memory addresses, we use array indexes.
 // So next[i] behaves like a pointer, telling us where to go next.
 // -1 means NULL, which tells us the list has ended.
+
+
