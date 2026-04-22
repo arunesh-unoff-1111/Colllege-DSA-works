@@ -7,7 +7,7 @@ struct Node {
     Node* next;
 };
 
-// --------------------------------Isertion at begining--------------------------------------//
+// --------------------------------Insertion at begining--------------------------------------//
 Node* insertAtBeginning(Node* head, int val) {
     Node* newNode = new Node();
     newNode->data = val;
@@ -22,7 +22,7 @@ Node* insertAtBeginning(Node* head, int val) {
     return head;
 }
 
-// --------------------------------Isertion at last--------------------------------------//
+// --------------------------------Insertion at last--------------------------------------//
 
 Node* insertAtLast(Node* head, int val) {
     Node* newNode = new Node();
@@ -43,7 +43,7 @@ Node* insertAtLast(Node* head, int val) {
 
     return head;
 }
-// --------------------------------Isertion at middle--------------------------------------//
+// --------------------------------Insertion at middle--------------------------------------//
 Node* insertAtMiddle(Node* head, int val, int x) {
     Node* newNode = new Node();
     newNode->data = val;
@@ -74,7 +74,7 @@ Node* insertAtMiddle(Node* head, int val, int x) {
     return head;
 }
 
-// --------------------------------Display list--------------------------------------//
+// --------------------------------Displaying the list--------------------------------------//
 
 void display(Node* head) {
     Node* temp = head;
