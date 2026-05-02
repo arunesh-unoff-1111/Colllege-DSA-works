@@ -1,148 +1,227 @@
-
+// -------------------------------------------------------Circular Linked List-------------------------------------------------- //
 #include <iostream>
 using namespace std;
 
+// Node structure
 struct Node {
     int data;
     Node* next;
-
-    Node(int value) {
-        data = value;
-        next = nullptr;
-    }
 };
 
-// Insert at end
-Node* insertAtEnd(Node* head, int value) {
-    Node* newNode = new Node(value);
+// ---------------- INSERTION ----------------
 
-    if (head == nullptr) {
+// Insert at beginning
+Node* insertAtBeginning(Node* head, int val) {
+    Node* newNode = new Node{val, NULL};
+
+    if (head == NULL) {
+        newNode->next = newNode;
         return newNode;
     }
 
     Node* temp = head;
-    while (temp->next != nullptr) {
+    while (temp->next != head)
         temp = temp->next;
-    }
 
     temp->next = newNode;
+    newNode->next = head;
+    head = newNode;
+
     return head;
 }
 
-// Delete at beginning
-Node* deleteAtBeginning(Node* head) {
-    if (head == nullptr) {
-        cout << "List is empty\n";
-        return nullptr;
+// Insert at end
+Node* insertAtEnd(Node* head, int val) {
+    Node* newNode = new Node{val, NULL};
+
+    if (head == NULL) {
+        newNode->next = newNode;
+        return newNode;
     }
 
     Node* temp = head;
+    while (temp->next != head)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->next = head;
+
+    return head;
+}
+
+// Insert after a value
+Node* insertAfter(Node* head, int val, int x) {
+    if (head == NULL) {
+        cout << "List is empty\n";
+        return head;
+    }
+
+    Node* temp = head;
+
+    do {
+        if (temp->data == x) {
+            Node* newNode = new Node{val, temp->next};
+            temp->next = newNode;
+            return head;
+        }
+        temp = temp->next;
+    } while (temp != head);
+
+    cout << "Value not found\n";
+    return head;
+}
+
+// ---------------- UPDATION ----------------
+
+// Update by value
+Node* updateValue(Node* head, int oldVal, int newVal) {
+    if (head == NULL) {
+        cout << "List is empty\n";
+        return head;
+    }
+
+    Node* temp = head;
+
+    do {
+        if (temp->data == oldVal) {
+            temp->data = newVal;
+            return head;
+        }
+        temp = temp->next;
+    } while (temp != head);
+
+    cout << "Value not found\n";
+    return head;
+}
+
+// ---------------- DELETION ----------------
+
+// Delete at beginning
+Node* deleteAtBeginning(Node* head) {
+    if (head == NULL) {
+        cout << "List is empty\n";
+        return head;
+    }
+
+    if (head->next == head) {
+        delete head;
+        return NULL;
+    }
+
+    Node* last = head;
+    while (last->next != head)
+        last = last->next;
+
+    Node* temp = head;
     head = head->next;
+    last->next = head;
+
     delete temp;
     return head;
 }
 
 // Delete at end
 Node* deleteAtEnd(Node* head) {
-    if (head == nullptr) {
+    if (head == NULL) {
         cout << "List is empty\n";
-        return nullptr;
+        return head;
     }
 
-    if (head->next == nullptr) {
+    if (head->next == head) {
         delete head;
-        return nullptr;
+        return NULL;
     }
 
     Node* temp = head;
-    while (temp->next->next != nullptr) {
+
+    while (temp->next->next != head)
         temp = temp->next;
-    }
 
-    delete temp->next;
-    temp->next = nullptr;
+    Node* last = temp->next;
+    temp->next = head;
 
+    delete last;
     return head;
 }
 
-// Delete after a given value
+// Delete after a value
 Node* deleteAfter(Node* head, int x) {
-    if (head == nullptr) {
+    if (head == NULL) {
         cout << "List is empty\n";
         return head;
     }
 
     Node* temp = head;
 
-    while (temp != nullptr && temp->data != x) {
+    do {
+        if (temp->data == x) {
+            Node* delNode = temp->next;
+
+            if (delNode == head && delNode->next == head) {
+                delete delNode;
+                return NULL;
+            }
+
+            temp->next = delNode->next;
+
+            if (delNode == head)
+                head = delNode->next;
+
+            delete delNode;
+            return head;
+        }
         temp = temp->next;
-    }
+    } while (temp != head);
 
-    if (temp == nullptr || temp->next == nullptr) {
-        cout << "Deletion not possible\n";
-        return head;
-    }
-
-    Node* delNode = temp->next;
-    temp->next = delNode->next;
-    delete delNode;
-
+    cout << "Value not found\n";
     return head;
 }
 
-// Display list
-void traverse(Node* head) {
-    if (head == nullptr) {
+// ---------------- DISPLAY ----------------
+
+void display(Node* head) {
+    if (head == NULL) {
         cout << "List is empty\n";
         return;
     }
 
     Node* temp = head;
-    cout << "Linked list: ";
 
-    while (temp != nullptr) {
+    do {
         cout << temp->data << " -> ";
         temp = temp->next;
-    }
+    } while (temp != head);
 
-    cout << "NULL\n";
+    cout << "(back to head)\n";
 }
 
+// ---------------- MAIN ----------------
+
 int main() {
-    Node* head = nullptr;
-    int choice, value, x;
+    Node* head = NULL;
 
-    while (true) {
-        cin >> choice;
+    // INSERTIONS
+    head = insertAtBeginning(head, 10);
+    head = insertAtEnd(head, 20);
+    head = insertAtEnd(head, 30);
+    head = insertAfter(head, 25, 20);
 
-        switch (choice) {
-            case 1:
-                cin >> value;
-                head = insertAtEnd(head, value);
-                break;
+    cout << "After Insertions: ";
+    display(head);
 
-            case 2:
-                head = deleteAtBeginning(head);
-                break;
+    // UPDATION
+    head = updateValue(head, 20, 99);
 
-            case 3:
-                head = deleteAtEnd(head);
-                break;
+    cout << "After Updation: ";
+    display(head);
 
-            case 4:
-                cin >> x;
-                head = deleteAfter(head, x);
-                break;
+    // DELETIONS
+    head = deleteAtBeginning(head);
+    head = deleteAtEnd(head);
+    head = deleteAfter(head, 25);
 
-            case 5:
-                traverse(head);
-                break;
+    cout << "After Deletions: ";
+    display(head);
 
-            case 6:
-                return 0;
-
-            default:
-                cout << "Invalid choice\n";
-        }
-    }
+    return 0;
 }
