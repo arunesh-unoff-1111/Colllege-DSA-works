@@ -99,7 +99,7 @@ Node* deleteAtBeginning(Node* head) {
         cout << "List is empty\n";
         return NULL;
     }
-
+    
     Node* temp = head;
     head = head->next;
     delete temp;
